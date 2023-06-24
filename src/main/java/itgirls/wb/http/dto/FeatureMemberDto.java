@@ -1,17 +1,17 @@
 package itgirls.wb.http.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
 public class FeatureMemberDto {
-    String name;
-    String description;
-    PointDto point;
-
+    private final GeoObjectDto geoObject;
+    @JsonCreator
+    public FeatureMemberDto(
+            @JsonProperty("GeoObject") GeoObjectDto geoObject
+    ) {
+        this.geoObject = geoObject;
+    }
+    public GeoObjectDto getGeoObject() {
+        return geoObject;
+    }
 }

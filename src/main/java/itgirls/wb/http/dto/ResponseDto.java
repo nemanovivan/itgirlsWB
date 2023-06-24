@@ -1,15 +1,18 @@
 package itgirls.wb.http.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
 public class ResponseDto {
-    private GeoObjectCollectionDto geoObjectCollectionDto;
+    private final GeoObjectCollectionDto geoObjectCollection;
+    @JsonCreator
+    public ResponseDto(
+            @JsonProperty("GeoObjectCollection") GeoObjectCollectionDto geoObjectCollection
+    ) {
+        this.geoObjectCollection = geoObjectCollection;
+    }
 
+    public GeoObjectCollectionDto getGeoObjectCollection() {
+        return geoObjectCollection;
+    }
 }

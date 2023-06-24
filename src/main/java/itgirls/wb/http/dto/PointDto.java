@@ -1,14 +1,18 @@
 package itgirls.wb.http.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
 public class PointDto {
-    String pos;
+    private final String coordinates;
+    @JsonCreator
+    public PointDto(
+            @JsonProperty("pos") String coordinates
+    ) {
+        this.coordinates = coordinates;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
 }

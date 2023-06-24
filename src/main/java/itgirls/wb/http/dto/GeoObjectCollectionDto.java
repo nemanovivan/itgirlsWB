@@ -1,16 +1,20 @@
 package itgirls.wb.http.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
 public class GeoObjectCollectionDto {
-    private List<FeatureMemberDto> featureMember;
+    private final List<FeatureMemberDto> featuteMemberList;
+    @JsonCreator
+    public GeoObjectCollectionDto(
+            @JsonProperty("featureMember") List<FeatureMemberDto> featuteMemberList
+    ) {
+        this.featuteMemberList = featuteMemberList;
+    }
+
+    public List<FeatureMemberDto> getFeatuteMemberList() {
+        return featuteMemberList;
+    }
 }
