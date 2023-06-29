@@ -30,28 +30,20 @@ public class ClientConfiguration {
                 .setSocketTimeout(200, TimeUnit.MILLISECONDS)
                 .build();
 
-        //RequestConfig requestConfig = RequestConfig.custom()
-                //.setConnectTimeout(connectTimeout)
-                //.setSocketTimeout(socketTimeout)
-                //.build();
-
         BasicHttpClientConnectionManager cm = new BasicHttpClientConnectionManager();
         cm.setConnectionConfig(connConfig);
 
-        //return HttpClients.custom().setDefaultRequestConfig(requestConfig);
         return HttpClients.custom().setConnectionManager(cm);
     }
 
     @Bean
     public RestTemplate restOperations(
             @Value("${timeout.connect:500}") int connectionTimeout,
-            @Value("${timeout.read:1000}") int readTimeout,
             HttpClientBuilder httpClientBuilder
     ) {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setConnectTimeout(connectionTimeout);
-        //requestFactory.setReadTimeout(readTimeout); //deprecated - можно ли без него???
-        requestFactory.setHttpClient(httpClientBuilder.build()); //c httpclient:4.5.14 ругался в этом месте на Closable httpClient
+        requestFactory.setHttpClient(httpClientBuilder.build());
 
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         return restTemplate;
@@ -61,8 +53,7 @@ public class ClientConfiguration {
     @Bean
     public GeoLocatorClient geoLocatorClient(
             @Qualifier("restOperations") RestTemplate restTemplate,
-            @Value("${urlGeoCoder}") String url
-            //@Value("{$urlGeoCoder}")String url
+            @Value("${urlGeoCoder}")String url
     ) {
         return new GeoLocatorClient(restTemplate, url);
     }
