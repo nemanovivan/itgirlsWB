@@ -1,5 +1,8 @@
 package itgirls.wb.http.client;
+
 import itgirls.wb.http.dto.WeatherDto;
+import itgirls.wb.http.service.GeoLocatorService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,11 +15,14 @@ public class WeatherClient {
     private final RestTemplate restTemplate;
     private final String url;
 
+
+    @Value("${apikeyWeather}")
+    private String apiKeyWeather;
+
     public WeatherClient(RestTemplate restTemplate, String url) {
         this.restTemplate = restTemplate;
         this.url = url;
     }
-
 
 
     public WeatherDto getWeather(float lat, float lon) {
@@ -27,9 +33,9 @@ public class WeatherClient {
                 .queryParam("format", "json")
                 .build()
                 .toUri();
- //       return restTemplate.getForObject(uri, WeatherDto.class);
+        //       return restTemplate.getForObject(uri, WeatherDto.class);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Yandex-API-Key", "591c1a40-645e-4d3e-ba2e-a9415e8f95be");
+        httpHeaders.add("X-Yandex-API-Key", apiKeyWeather);
         HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
         return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, WeatherDto.class).getBody();
     }
