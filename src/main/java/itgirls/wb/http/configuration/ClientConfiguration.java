@@ -1,8 +1,9 @@
 package itgirls.wb.http.configuration;
 
+
 import itgirls.wb.http.client.GeoLocatorClient;
+import itgirls.wb.http.client.WeatherClient;
 import org.apache.hc.client5.http.config.ConnectionConfig;
-import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 
@@ -19,10 +20,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
+
 @Configuration
 public class ClientConfiguration {
 
     private static final Timeout timeout = Timeout.ofMilliseconds(200L);
+
     @Bean
     public HttpClientBuilder httpClientBuilder() {
         ConnectionConfig connConfig = ConnectionConfig.custom()
@@ -53,8 +56,17 @@ public class ClientConfiguration {
     @Bean
     public GeoLocatorClient geoLocatorClient(
             @Qualifier("restOperations") RestTemplate restTemplate,
-            @Value("${urlGeoCoder}")String url
+            @Value("${urlGeoCoder}") String url
     ) {
         return new GeoLocatorClient(restTemplate, url);
     }
+
+    @Bean
+    public WeatherClient weatherClient(
+            @Qualifier("restOperations") RestTemplate restTemplate,
+            @Value("${url}") String url
+    ) {
+        return new WeatherClient(restTemplate, url);
+    }
 }
+

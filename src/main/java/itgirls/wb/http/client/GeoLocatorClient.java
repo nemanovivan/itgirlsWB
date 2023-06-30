@@ -1,8 +1,6 @@
 package itgirls.wb.http.client;
 
-import itgirls.wb.http.dto.Draft;
 import itgirls.wb.http.dto.GeoLocatorDto;
-import itgirls.wb.http.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
