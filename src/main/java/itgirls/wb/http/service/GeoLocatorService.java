@@ -2,9 +2,11 @@ package itgirls.wb.http.service;
 
 import itgirls.wb.exceptions.NoCoordinatesFound;
 
+import java.util.List;
+
 public interface GeoLocatorService {
 
-    float getLatitute(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound;
-    float getLongitude(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound ;
+    List<Float> getCoordinates(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound;
+
 
 }

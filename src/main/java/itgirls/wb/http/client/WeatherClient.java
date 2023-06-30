@@ -3,6 +3,7 @@ package itgirls.wb.http.client;
 import itgirls.wb.exceptions.NoCoordinatesFound;
 import itgirls.wb.http.dto.WeatherDto;
 import itgirls.wb.http.service.GeoLocatorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,11 +12,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 public class WeatherClient {
     private final RestTemplate restTemplate;
     private final String url;
 
+    @Autowired
     private GeoLocatorService geoLocatorService;
 
 
@@ -28,7 +31,7 @@ public class WeatherClient {
     }
 
 
-    public WeatherDto getWeather(float lat , float lon) {
+    public WeatherDto getWeather(float lat, float lon) {
         URI uri = UriComponentsBuilder.fromUriString(url)
                 .pathSegment("informers")
                 .queryParam("lat", lat)
@@ -36,7 +39,6 @@ public class WeatherClient {
                 .queryParam("format", "json")
                 .build()
                 .toUri();
-        //       return restTemplate.getForObject(uri, WeatherDto.class);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Yandex-API-Key", apiKeyWeather);
         HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
@@ -44,16 +46,14 @@ public class WeatherClient {
     }
 
     public WeatherDto getWeatherByAdress(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
-        float lat = geoLocatorService.getLatitute(country, city, street, numberOfHouse);
-        float lon = geoLocatorService.getLongitude(country, city, street, numberOfHouse);
+        List<Float> coordinates = geoLocatorService.getCoordinates(country, city, street, numberOfHouse);
         URI uri = UriComponentsBuilder.fromUriString(url)
                 .pathSegment("informers")
-                .queryParam("lat", lat)
-                .queryParam("lon", lon)
+                .queryParam("lat", coordinates.get(1))
+                .queryParam("lon", coordinates.get(0))
                 .queryParam("format", "json")
                 .build()
                 .toUri();
-        //       return restTemplate.getForObject(uri, WeatherDto.class);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Yandex-API-Key", apiKeyWeather);
         HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
