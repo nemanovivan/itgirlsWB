@@ -45,8 +45,8 @@ public class WeatherClient {
         return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, WeatherDto.class).getBody();
     }
 
-    public WeatherDto getWeather(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
-        List<Float> coordinates = geoLocatorService.getCoordinates(country, city, street, numberOfHouse);
+    public WeatherDto getWeather(String address) throws NoCoordinatesFound {
+        List<Float> coordinates = geoLocatorService.getCoordinates(address);
         return getWeather(coordinates.get(1), coordinates.get(0));
     }
 }

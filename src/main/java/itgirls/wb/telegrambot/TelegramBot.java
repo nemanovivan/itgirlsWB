@@ -1,16 +1,9 @@
 package itgirls.wb.telegrambot;
 
-import itgirls.wb.exceptions.NoCoordinatesFound;
-import itgirls.wb.http.client.GeoLocatorClient;
 import itgirls.wb.http.client.WeatherClient;
 import itgirls.wb.http.dto.WeatherDto;
-import itgirls.wb.http.service.GeoLocatorService;
-
-import java.util.List;
-import java.util.regex.*;
 
 import itgirls.wb.http.service.GeoLocatorServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,11 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 
-import static org.springframework.core.io.buffer.DataBufferUtils.matcher;
-
 @Component
-//@AllArgsConstructor
-//@RestController
 public final class TelegramBot extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     @Autowired
@@ -104,8 +93,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
             } else if (messageText.equals("Погода по координатам")) {
                 sendMessage(chatId, "Введите координаты (широта и долгота через запятую)");
             } else if (messageText.equals("Погода по адресу")) {
-                sendMessage(chatId, "Введите адрес в следующем формате: страна, город, улица, дом. " +
-                        "Пример: Россия, Екатеринбург, Куйбышева, 143");
+                sendMessage(chatId, "Введите адрес в следующем формате: страна город улица дом\nПример: Russia Moscow Leninskiy 5");
             }
             else if (messageText.contains(".")) {
                 String numbers[] = messageText.split(",");
@@ -114,35 +102,11 @@ public final class TelegramBot extends TelegramLongPollingBot {
                 WeatherDto weather = weatherClient.getWeather(latitude, longitude);
                 sendMessage(chatId, String.valueOf(weather));
             } else {
-                String[] address = messageText.split(", ");
-                String country = address[0];
-                String city = address[1];
-                String street = address[2];
-                String house = address[3];
-                WeatherDto weather = weatherClient.getWeather(country, city, street, house);
+                WeatherDto weather = weatherClient.getWeather(messageText);
                 sendMessage(chatId, weather.toString());
             }
-
-
-//            switch (messageText){
-//                case "/start":
-//                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-//                    break;
-//                case "Погода по координатам":
-//                    sendMessage(chatId, "Введите координаты (широта и долгота через запятую)");
-//                    break;
-//                case "Погода по адресу":
-//                    sendMessage(chatId, "Введите адрес");
-//                    break;
-//                default:
-//                    String numbers[] = messageText.split(",");
-//                float latitude = Float.parseFloat(numbers[0]);
-//                float longitude = Float.parseFloat(numbers[1]);
-//                WeatherDto weather = weatherClient.getWeather(latitude, longitude);
-//                sendMessage(chatId, String.valueOf(weather));
-//                    }
             }
 
         }
-        }
+}
 

@@ -25,8 +25,7 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
      * @throws NoCoordinatesFound
      */
     @Override
-    public List<Float> getCoordinates(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
-        String address = combineAddress(country, city, street, numberOfHouse);
+    public List<Float> getCoordinates(String address) throws NoCoordinatesFound {
         try {
             GeoLocatorDto geoLocatorDto = geoLocatorClient.getCoordinatesFrom(address);
             String[] coordinates = getCoordinatesFromDto(geoLocatorDto).split(" ");
