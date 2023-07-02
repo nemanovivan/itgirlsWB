@@ -14,16 +14,6 @@ import java.util.List;
 public class GeoLocatorServiceImpl implements GeoLocatorService {
     private final GeoLocatorClient geoLocatorClient;
 
-    /**
-     * @param country - страна, указанная пользователем
-     * @param city - город, указанный пользователем
-     * @param street - улица, указанная пользователем
-     * @param numberOfHouse - номер дома, указанный пользователем
-     * @return - лист чисел с плавающей точкой, состоящий из 2ух элементов:
-     *           первый эелемент координата Longitude(индекс 0),
-     *           второй - Latitude(индекс 1)
-     * @throws NoCoordinatesFound
-     */
     @Override
     public List<Float> getCoordinates(String address) throws NoCoordinatesFound {
         try {
@@ -44,7 +34,4 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
                 .coordinates();
     }
 
-    private String combineAddress(String country, String city, String street, String numberOfHouse) {
-        return country + " " + city + " " + street + " " + numberOfHouse;
-    }
 }

@@ -58,7 +58,7 @@ public record WeatherDto(String date, Fact fact, Forecast forecast) {
             @JsonCreator
             public Parts(
                     @JsonProperty("part_name") String partName,
-                    @JsonProperty("temp") int temp,
+                    @JsonProperty("temp_avg") int temp,
                     @JsonProperty("feels_like") int tempFeelsLike,
                     @JsonProperty("condition") String condition,
                     @JsonProperty("wind_speed") int windSpeed,
