@@ -119,11 +119,8 @@ public final class TelegramBot extends TelegramLongPollingBot {
                 String city = address[1];
                 String street = address[2];
                 String house = address[3];
-                List<Float> coordList = geolocService.getCoordinates(country, city, street, house);
-                float latitude = coordList.get(0);
-                float longitude = coordList.get(1);
-                WeatherDto weather = weatherClient.getWeather(latitude, longitude);
-                sendMessage(chatId, String.valueOf(latitude));
+                WeatherDto weather = weatherClient.getWeather(country, city, street, house);
+                sendMessage(chatId, weather.toString());
             }
 
 

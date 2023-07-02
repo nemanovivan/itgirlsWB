@@ -6,7 +6,6 @@ import itgirls.wb.http.dto.GeoLocatorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
     private final GeoLocatorClient geoLocatorClient;
 
     /**
-     *
      * @param country - страна, указанная пользователем
      * @param city - город, указанный пользователем
      * @param street - улица, указанная пользователем
