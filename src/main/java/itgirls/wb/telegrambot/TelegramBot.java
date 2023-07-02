@@ -11,6 +11,7 @@ import java.util.regex.*;
 
 import itgirls.wb.http.service.GeoLocatorServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -89,6 +90,7 @@ public final class TelegramBot extends TelegramLongPollingBot {
         return botConfig.getToken();
     }
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
 
@@ -117,12 +119,11 @@ public final class TelegramBot extends TelegramLongPollingBot {
                 String city = address[1];
                 String street = address[2];
                 String house = address[3];
-                try {
-                    List<Float> coordList = geolocService.getCoordinates(country, city, street, house);
-                    sendMessage(chatId, coordList.toString());
-                } catch (NoCoordinatesFound e) {
-                    throw new RuntimeException(e);
-                }
+                List<Float> coordList = geolocService.getCoordinates(country, city, street, house);
+                float latitude = coordList.get(0);
+                float longitude = coordList.get(1);
+                WeatherDto weather = weatherClient.getWeather(latitude, longitude);
+                sendMessage(chatId, String.valueOf(latitude));
             }
 
 
