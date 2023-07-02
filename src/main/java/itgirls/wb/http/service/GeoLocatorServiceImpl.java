@@ -6,7 +6,6 @@ import itgirls.wb.http.dto.GeoLocatorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
     private final GeoLocatorClient geoLocatorClient;
 
     /**
-     *
      * @param country - страна, указанная пользователем
      * @param city - город, указанный пользователем
      * @param street - улица, указанная пользователем
@@ -27,10 +25,9 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
      * @throws NoCoordinatesFound
      */
     @Override
-    public List<Float> getCoordinates(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
-        String address = combineAddress(country, city, street, numberOfHouse);
+    public List<Float> getCoordinates(String address) throws NoCoordinatesFound {
         try {
-            GeoLocatorDto geoLocatorDto = geoLocatorClient.getCoordinates(address);
+            GeoLocatorDto geoLocatorDto = geoLocatorClient.getCoordinatesFrom(address);
             String[] coordinates = getCoordinatesFromDto(geoLocatorDto).split(" ");
             return Arrays.stream(coordinates).map(Float::valueOf).toList();
         } catch (Exception e) {

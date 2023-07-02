@@ -45,18 +45,8 @@ public class WeatherClient {
         return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, WeatherDto.class).getBody();
     }
 
-    public WeatherDto getWeatherByAdress(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
-        List<Float> coordinates = geoLocatorService.getCoordinates(country, city, street, numberOfHouse);
-        URI uri = UriComponentsBuilder.fromUriString(url)
-                .pathSegment("informers")
-                .queryParam("lat", coordinates.get(1))
-                .queryParam("lon", coordinates.get(0))
-                .queryParam("format", "json")
-                .build()
-                .toUri();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Yandex-API-Key", apiKeyWeather);
-        HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
-        return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, WeatherDto.class).getBody();
+    public WeatherDto getWeather(String address) throws NoCoordinatesFound {
+        List<Float> coordinates = geoLocatorService.getCoordinates(address);
+        return getWeather(coordinates.get(1), coordinates.get(0));
     }
 }
