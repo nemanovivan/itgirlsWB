@@ -30,10 +30,6 @@ public class WeatherClient {
         this.url = url;
     }
 
-//    public WeatherClient() {
-//
-//    }
-
 
     public WeatherDto getWeather(float lat, float lon) {
         URI uri = UriComponentsBuilder.fromUriString(url)

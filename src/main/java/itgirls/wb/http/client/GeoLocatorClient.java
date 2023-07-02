@@ -23,7 +23,7 @@ public class GeoLocatorClient {
         this.url = url;
     }
 
-    public GeoLocatorDto getCoordinates(String address) {
+    public GeoLocatorDto getCoordinatesFrom(String address) {
         URI uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("apikey", apiKey)
                 .queryParam("geocode", address)

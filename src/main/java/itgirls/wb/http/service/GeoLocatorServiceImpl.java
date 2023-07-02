@@ -30,7 +30,7 @@ public class GeoLocatorServiceImpl implements GeoLocatorService {
     public List<Float> getCoordinates(String country, String city, String street, String numberOfHouse) throws NoCoordinatesFound {
         String address = combineAddress(country, city, street, numberOfHouse);
         try {
-            GeoLocatorDto geoLocatorDto = geoLocatorClient.getCoordinates(address);
+            GeoLocatorDto geoLocatorDto = geoLocatorClient.getCoordinatesFrom(address);
             String[] coordinates = getCoordinatesFromDto(geoLocatorDto).split(" ");
             return Arrays.stream(coordinates).map(Float::valueOf).toList();
         } catch (Exception e) {
