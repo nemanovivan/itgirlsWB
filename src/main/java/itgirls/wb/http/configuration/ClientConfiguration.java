@@ -20,9 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class ClientConfiguration {
-
-    private static final Timeout timeout = Timeout.ofMilliseconds(200L);
-
+    /**
+     * в методе httpClientBuilder() определяем конфигурацию HttpClientBuilder,
+     * который используется для конфигурирования RestTemplate
+     *
+     * @return HttpClientBuilder c заданной конфигурацией
+     */
     @Bean
     public HttpClientBuilder httpClientBuilder() {
         ConnectionConfig connConfig = ConnectionConfig.custom()
@@ -36,6 +39,14 @@ public class ClientConfiguration {
         return HttpClients.custom().setConnectionManager(cm);
     }
 
+    /**
+     * в методе restOperations() определяем конфигурацию RestTemplate,
+     * который используется для отправки запросов в geoLocatorClient() и weatherClient()
+     *
+     * @param connectionTimeout определяет таймаут подключения
+     * @param httpClientBuilder определяет используемый HttpClientBuilder
+     * @return RestTemplate c заданной конфигурацией
+     */
     @Bean
     public RestTemplate restOperations(
             @Value("${timeout.connect:500}") int connectionTimeout,
@@ -47,9 +58,15 @@ public class ClientConfiguration {
 
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         return restTemplate;
-
     }
 
+    /**
+     * в методе geoLocatorClient() определяем какой url и restTemplate используется в GeoLocatorClient
+     *
+     * @param restTemplate формируем в restOperations()
+     * @param url          берем из application.properties
+     * @return GeoLocatorClient
+     */
     @Bean
     public GeoLocatorClient geoLocatorClient(
             @Qualifier("restOperations") RestTemplate restTemplate,
@@ -57,6 +74,14 @@ public class ClientConfiguration {
     ) {
         return new GeoLocatorClient(restTemplate, url);
     }
+
+    /**
+     * в методе weatherClient() определяем какой url и restTemplate используется в WeatherClient
+     *
+     * @param restTemplate формируем в restOperations()
+     * @param url          берем из application.properties
+     * @return WeatherClient
+     */
 
     @Bean
     public WeatherClient weatherClient(
