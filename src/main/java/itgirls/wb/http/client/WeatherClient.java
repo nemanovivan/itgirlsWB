@@ -5,6 +5,8 @@ import itgirls.wb.http.dto.WeatherDto;
 import itgirls.wb.http.service.GeoLocatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@CacheConfig(cacheNames = "weatherCache")
 public class WeatherClient {
     private final RestTemplate restTemplate;
     private final String url;
@@ -31,6 +34,7 @@ public class WeatherClient {
     }
 
 
+    @Cacheable("weatherCache")
     public WeatherDto getWeather(float lat, float lon) {
         URI uri = UriComponentsBuilder.fromUriString(url)
                 .pathSegment("informers")
