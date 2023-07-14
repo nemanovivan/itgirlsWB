@@ -1,9 +1,12 @@
 package itgirls.wb.http.service;
 
 import itgirls.wb.exceptions.NoCoordinatesFound;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
+@CacheConfig(cacheNames = "coordinatesCache")
 public interface GeoLocatorService {
 
     /**
@@ -13,6 +16,7 @@ public interface GeoLocatorService {
      *           второй - Latitude(индекс 1)
      * @throws NoCoordinatesFound - если адрес не был найден
      */
+    @Cacheable("coordinatesCache")
     List<Float> getCoordinates(String address) throws NoCoordinatesFound;
 
 
